@@ -12,15 +12,3 @@ export class ResponsePayload {
   @Field(() => User, { nullable: true }) // Update the type to User
   data?: User | null;
 }
-
-@ObjectType()
-export class ResponsePayloadBool {
-  @Field({ nullable: true })
-  status: number;
-
-  @Field({ nullable: true })
-  message: string;
-
-  @Field(() => Boolean, { nullable: true }) // Update the type to User
-  data?: boolean | null;
-}

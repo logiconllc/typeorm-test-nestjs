@@ -2,27 +2,22 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Collectible {
+  id: String!
+  owner: User
+  title: String
+}
+
 type User {
   id: String!
   name: String
-  email: String!
-  otp: String
-  otpExpiry: DateTime
-  password: String
-  invite: String
-  status: String!
-  role: String!
-  walletAddress: String
+  collectibles: [Collectible!]!
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-type TokenType {
-  id: String
-  jwt: String
+type CreateCollectibleResponseDto {
+  status: Float
+  message: String
+  data: Collectible
 }
 
 type ResponsePayload {
@@ -31,47 +26,20 @@ type ResponsePayload {
   data: User
 }
 
-type ResponsePayloadBool {
-  status: Float
-  message: String
-  data: Boolean
-}
-
 type Query {
-  userData: String!
+  collectible: [Collectible!]!
 }
 
 type Mutation {
-  userCreation(createUserInputDTO: CreateUserInputDTO!): ResponsePayload!
-  userVerification(OtpVerificationDTO: OtpVerificationDTO!): ResponsePayloadBool!
-  partnerSignup(PartnerSignUpDTO: PartnerSignUpDTO!): ResponsePayload!
-  appUserSignUp(SignupAppUserDTO: SignupAppUserDTO!): ResponsePayload!
-  login(loginPayloadDTO: LoginPayloadDTO!): TokenType!
+  createUser(createUserInputDTO: CreateUserInputDTO!): ResponsePayload!
+  createCollectible(createCollectibleInput: CreateCollectibleInput!): CreateCollectibleResponseDto!
 }
 
 input CreateUserInputDTO {
-  email: String!
-  role: String!
-}
-
-input OtpVerificationDTO {
-  email: String!
-  otp: String!
-}
-
-input PartnerSignUpDTO {
-  email: String!
   name: String!
-  newPassword: String!
 }
 
-input SignupAppUserDTO {
-  email: String!
-  role: String!
-  password: String!
-}
-
-input LoginPayloadDTO {
-  email: String!
-  password: String!
+input CreateCollectibleInput {
+  title: String!
+  ownerId: String!
 }

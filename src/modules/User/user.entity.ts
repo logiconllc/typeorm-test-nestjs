@@ -1,6 +1,7 @@
 
 import { Field, ObjectType } from '@nestjs/graphql';
-import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Exclude } from 'class-transformer';
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn, VirtualColumn } from 'typeorm';
 import { Collectible } from '../collectible/collectible.entity';
 
 
@@ -9,15 +10,23 @@ import { Collectible } from '../collectible/collectible.entity';
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   @Field()
-  public id: string;
+  id: string;
 
   @Field({ nullable: true })
   @Column({ nullable: true })
-  public name: string;
+  name: string;
 
-  @OneToMany(() => Collectible, (collectible) => collectible.owner)
-  @Field(()=> [Collectible])
-  public collectibles : Collectible[]
+  @Exclude()
+  @Column()
+  password: string;
+
+  @OneToMany(() => Collectible, (collectible) => collectible.owner, {nullable: true, eager: true})
+  @Field(()=> [Collectible], {nullable: true})
+  collectibles : Collectible[]
+
+  @VirtualColumn({ type: 'int', query: (alias) => `SELECT COUNT(*) FROM "Collectible"  WHERE "Collectible"."ownerId" = ${alias}.id`})
+  @Field()
+  collectibleCount: number;
   
 
 }

@@ -11,7 +11,8 @@ type Collectible {
 type User {
   id: String!
   name: String
-  collectibles: [Collectible!]!
+  collectibles: [Collectible!]
+  collectibleCount: Float!
 }
 
 type CreateCollectibleResponseDto {
@@ -26,7 +27,15 @@ type ResponsePayload {
   data: User
 }
 
+type UsersResponsePayload {
+  status: Float
+  message: String
+  data: [User!]!
+}
+
 type Query {
+  getUser(userId: String!): ResponsePayload!
+  getTopUsersCollectibleWise: UsersResponsePayload!
   collectible: [Collectible!]!
 }
 

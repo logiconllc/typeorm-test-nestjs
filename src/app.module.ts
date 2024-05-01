@@ -1,5 +1,5 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { HttpStatus, Module } from '@nestjs/common';
+import { ClassSerializerInterceptor, HttpStatus, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -23,7 +23,6 @@ import { LoggingInterceptor } from './shared/logging.interceptor';
       playground: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       context: ({ req }) => ({ headers: req.headers }),
-
       formatError: (error: GraphQLFormattedError) => {
         const graphQLFormattedError = {
           message:
@@ -31,8 +30,8 @@ import { LoggingInterceptor } from './shared/logging.interceptor';
           code:
             error.extensions?.code || "SERVER_ERROR",
           statusCode: error.extensions?.statusCode || HttpStatus.INTERNAL_SERVER_ERROR,
-          stacktrace: process.env.ENV == "local" ? error.extensions?.stacktrace : null 
-        };
+          stacktrace: process.env.ENV == "development" ? error.extensions?.stacktrace : null 
+      };
         return graphQLFormattedError;
       },
     }),
@@ -49,6 +48,11 @@ import { LoggingInterceptor } from './shared/logging.interceptor';
       provide: APP_INTERCEPTOR,
       useClass: LoggingInterceptor,
     },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ClassSerializerInterceptor
+      
+    }
   ],
 })
 export class AppModule {}

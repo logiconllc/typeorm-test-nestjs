@@ -8,9 +8,9 @@ Practice project for Typeorm with Nest.js
 - Nest.js
 - GrahpQL (code basis)
 - Additionals
--- Logging Interceptor (for both REST & GraphQL)
--- Custom GrahQL Response formatter (no stacktrace in prod)
--- Custom GraphQL Error (for proper GraphQL Exception handling)
+- --- Logging Interceptor (for both REST & GraphQL)
+- --- Custom GrahQL Response formatter (no stacktrace in prod)
+- --- Custom GraphQL Error (for proper GraphQL Exception handling)
 
 ## Installation
 
@@ -45,4 +45,5 @@ $ npm run start:prod
 ## 🚀 About Me
 
 > Built with ❤️ by @logiconllc
-<https://logicon.tech>
+>
+> <https://logicon.tech>
